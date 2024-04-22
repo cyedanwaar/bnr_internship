@@ -16,7 +16,7 @@ class CustomPermissionForUser(BasePermission):
 
 # It is not working as expected
 
-        return bool(Blog.objects.all().filter(is_public=False))
+        return bool(Blog.objects.filter(is_public=False))
 
 
 class AdminOrReadOnly(BasePermission):
