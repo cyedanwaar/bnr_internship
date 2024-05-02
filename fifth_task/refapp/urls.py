@@ -3,8 +3,9 @@ from .views import ReferenceView, ReferenceViewRUD, BidderView, BidderViewRUD
 
 
 urlpatterns = [
+    # path('general/', GeneralView.as_view()),
     path('reference/', ReferenceView.as_view()),
-    path('reference/<int:pk>', ReferenceViewRUD.as_view()),
+    path('reference/<int:pk>/', ReferenceViewRUD.as_view()),
     path('bidder/', BidderView.as_view()),
-    path('bidder/<int:pk>', BidderViewRUD.as_view()),
+    path('bidder/<int:pk>/', BidderViewRUD.as_view()),
 ]
