@@ -28,7 +28,8 @@ class Opening(models.Model):
         verbose_name_plural = 'openings'
  
     no_of_openings = models.IntegerField(default=1, validators=[MinValueValidator(1)])
- 
+
+
 class OpeningDetail(models.Model):
 
     class DropDownOptions(models.TextChoices):
@@ -80,3 +81,34 @@ class Partner(models.Model):
     partner_name = models.CharField(max_length=255, null=True, blank=True)
     partner_address = models.CharField(max_length=255, null=True, blank=True)
     opening_details = models.ForeignKey(OpeningDetail, on_delete=models.CASCADE, null=True, blank=True, related_name="partners")
+
+class ProjectInformation(models.Model):
+
+    class Meta:
+        db_table = 'project_information'
+        verbose_name = 'project_information'
+        verbose_name_plural = 'project_informations'
+    project_title = models.CharField(max_length=75, null=False, blank=False)
+    project_description = models.TextField(max_length=500, null=False, blank=False)
+
+    openings = models.ForeignKey(Opening, on_delete=models.CASCADE, null=True, blank=True, related_name='project_info')
+
+    # reference_number = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+    # procurement_vehicle = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+    # job_mode = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+    # job_location = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+    # client_company = models.ForeignKey('self', null=True, blank=True, related_name="project_info")
+    # due_time = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+    # due_date = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+    # language_requirement = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+    # clearance_required = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
+
+
+class Job(models.Model):
+    class Meta:
+        db_table = 'job'
+        verbose_name = 'job'
+        verbose_name_plural = 'jobs'
+    title = models.CharField(max_length=255, null=True, blank=True)
+    job_project_info = models.ForeignKey(ProjectInformation, on_delete=models.CASCADE ,null=False, blank=False, related_name="job")
+ 

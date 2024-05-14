@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from .models import Recruiter, Proposal, Opening, OpeningDetail, Partner
+from .models import Recruiter, Proposal, Opening, OpeningDetail, Partner, Job, ProjectInformation
 from drf_writable_nested import WritableNestedModelSerializer
+
+
+class JobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'
 
 
 class PartnerSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
@@ -85,4 +91,21 @@ class OpeningSerializer(WritableNestedModelSerializer, serializers.ModelSerializ
                 Partner.objects.create(opening_details=od_instance, **partner_obj)
 
         return opening_instance
+    
 
+class ProjectInformationSerializer(serializers.ModelSerializer):
+    job_project_info = JobSerializer(required=False, many=True)
+    project_info = OpeningSerializer(required=False, many=True)
+    class Meta:
+        model = ProjectInformation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        job_data = validated_data.pop('job_project_info', [])
+
+        project_info_instance = ProjectInformation.objects.create(**validated_data)
+
+        for objs in job_data:
+            Job.objects.create(job_project_info = project_info_instance, **objs)
+        
+        return project_info_instance

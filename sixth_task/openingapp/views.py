@@ -1,12 +1,12 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .serializers import OpeningSerializer
-from .models import Opening
+from .serializers import OpeningSerializer, ProjectInformationSerializer
+from .models import Opening, ProjectInformation
 
 class OpeningView(ListCreateAPIView):
-    queryset = Opening.objects.all()
-    serializer_class = OpeningSerializer
+    queryset = ProjectInformation.objects.all()
+    serializer_class = ProjectInformationSerializer
 
 class OpeningViewRUD(RetrieveUpdateDestroyAPIView):
-    queryset = Opening.objects.all()
-    serializer_class = OpeningSerializer
+    queryset = ProjectInformation.objects.all()
+    serializer_class = ProjectInformationSerializer
     lookup_field = 'pk'
