@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Recruiter, Proposal, Opening, Partner, Job, ProjectInformation, ProjectInfoUpdate
+from .models import Recruiter, Proposal, Opening, Partner, Job, ProjectInformation, ProjectInfoUpdate, ProjectFiles
 from drf_writable_nested import WritableNestedModelSerializer
 
 
@@ -91,24 +91,41 @@ class OpeningSerializer(WritableNestedModelSerializer, serializers.ModelSerializ
                 Partner.objects.create(project_information=od_instance, **partner_obj)
 
         return opening_instance
+
+
+class ProjectFilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectFiles
+        fields = '__all__'
     
 
 class ProjectInformationSerializer(serializers.ModelSerializer):
     job_project_info = JobSerializer(required=False, many=True)
     project_info = OpeningSerializer(required=False, many=True)
+    project_files = ProjectFilesSerializer(required=False, many=True)
     class Meta:
         model = ProjectInformation
         fields = '__all__'
 
     def create(self, validated_data):
         job_data = validated_data.pop('job_project_info', [])
+        files_data = validated_data.pop('project_files', [])
 
         project_info_instance = ProjectInformation.objects.create(**validated_data)
 
         for objs in job_data:
             Job.objects.create(job_project_info = project_info_instance, **objs)
         
+        for objs in files_data:
+            ProjectFiles.objects.create(project_info_update = project_info_instance, **objs)
+        
         return project_info_instance
+
+
+class ProjectInfoUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectInfoUpdate
+        fields = '__all__'
 
 
 class ProjectManagerScreenSerializer(serializers.ModelSerializer):

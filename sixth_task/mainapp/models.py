@@ -144,3 +144,5 @@ class ProjectFiles(models.Model):
     nda = models.FileField(null=True, blank=True)
     education = models.FileField(null=True, blank=True)
     candidate_reference = models.FileField(null=True, blank=True)
+
+    project_info_update = models.ForeignKey(ProjectInfoUpdate, on_delete=models.CASCADE, null=True, blank=True, related_name="project_files")

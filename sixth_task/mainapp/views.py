@@ -1,6 +1,26 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView
-from .models import ProjectInformation, ProjectInfoUpdate
-from .serializers import ProjectManagerScreenSerializer, ProjectDashboardSerializer
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .models import ProjectInformation, ProjectInfoUpdate, Opening
+from .serializers import ProjectManagerScreenSerializer, ProjectDashboardSerializer, OpeningSerializer, ProjectInfoUpdateSerializer
+
+
+class AddEditProjectView(ListCreateAPIView):
+    queryset = Opening.objects.all()
+    serializer_class = OpeningSerializer
+
+class AddEditProjectViewRUD(RetrieveUpdateDestroyAPIView):
+    queryset = Opening.objects.all()
+    serializer_class = OpeningSerializer
+    lookup_field = 'pk'
+
+
+class ProjectInfoUpdateView(ListCreateAPIView):
+    queryset = ProjectInfoUpdate.objects.all()
+    serializer_class = ProjectInfoUpdateSerializer
+
+class ProjectInfoUpdateViewRUD(RetrieveUpdateDestroyAPIView):
+    queryset = ProjectInfoUpdate.objects.all()
+    serializer_class = ProjectInfoUpdateSerializer
+    lookup_field = 'pk'
 
 
 class ProjectManagerScreenView(ListCreateAPIView):
