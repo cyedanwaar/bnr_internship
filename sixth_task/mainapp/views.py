@@ -2,6 +2,8 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpda
 from .models import ProjectInformation, ProjectInfoUpdate, Opening
 from .serializers import ProjectManagerScreenSerializer, ProjectDashboardSerializer, OpeningSerializer, ProjectInfoUpdateSerializer
 
+from drf_multiple_model.views import FlatMultipleModelAPIView
+
 
 class AddEditProjectView(ListCreateAPIView):
     queryset = Opening.objects.all()
@@ -53,3 +55,10 @@ class ProjectDashboardView(ListCreateAPIView):
 
         # return project_info_queryset.union(project_info_update_queryset)
         # return
+
+
+class TestApiView(FlatMultipleModelAPIView):
+    querylist = [
+        {'queryset': Opening.objects.all(), 'serializer_class': OpeningSerializer},
+        {'queryset': ProjectInfoUpdate.objects.all(), 'serializer_class': ProjectInfoUpdateSerializer},
+    ]

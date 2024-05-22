@@ -28,6 +28,8 @@ class Opening(models.Model):
     no_of_openings = models.IntegerField(default=1, validators=[MinValueValidator(1)])
 
 
+
+# Add and edit project 
 class ProjectInformation(models.Model):
 
     class DropDownOptions(models.TextChoices):
@@ -81,6 +83,7 @@ class ProjectInformation(models.Model):
     candidate_references = models.CharField(max_length=20, default="N/A", choices=DropDownOptions.choices)
     miscellaneous = models.CharField(max_length=20, default="N/A", choices=DropDownOptions.choices)
 
+
 class Job(models.Model):
     class Meta:
         db_table = 'job'
@@ -133,6 +136,7 @@ class ProjectInfoUpdate(models.Model):
     candidate_rated_requirement = models.IntegerField(null=False, blank=False)
     candidate_language_requirement = models.CharField(max_length=5, choices=DropDownOptionsOne.choices, null=False, blank=False)
 
+    project_details = models.OneToOneField(ProjectInformation, on_delete=models.CASCADE, null=True, blank=True, related_name='project_update_info')
 
 class ProjectFiles(models.Model):
     class Meta:
