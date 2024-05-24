@@ -26,6 +26,18 @@ class Opening(models.Model):
         verbose_name_plural = 'openings'
  
     no_of_openings = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    title = models.CharField(max_length=255, null=True, blank=True)
+
+    security_requirement = models.CharField(max_length=255, null=True, blank=True)
+    education = models.CharField(max_length=255, null=True, blank=True)
+    language_requirement = models.CharField(max_length=255, null=True, blank=True)
+    
+    recruiter = models.ForeignKey(Recruiter, on_delete=models.CASCADE, null=True, blank=True, related_name="recruiter_opening")
+
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE, null=True, blank=True, related_name="proposal_opening"),
+
+    # It will be conected through user management
+    # partner = models.ForeignKey('company', on_delete=models.CASCADE, null=True, blank=True, related_name="project_partner")
 
 
 
@@ -50,31 +62,10 @@ class ProjectInformation(models.Model):
     project_description = models.TextField(max_length=500, null=False, blank=False)
  
     openings = models.ForeignKey(Opening, on_delete=models.CASCADE, null=True, blank=True, related_name="details")
-
-
-    # no_of_openings = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # reference_number = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # procurement_vehicle = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # job_mode = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # job_location = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # client_company = models.ForeignKey('self', null=True, blank=True, related_name="project_info")
-    # due_time = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # due_date = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # language_requirement = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
-    # clearance_required = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="project_info")
- 
-    title = models.CharField(max_length=255, null=True, blank=True)
-    security_requirement = models.CharField(max_length=255, null=True, blank=True)
-    education = models.CharField(max_length=255, null=True, blank=True)
-    language_requirement = models.CharField(max_length=255, null=True, blank=True)
-    
-    recruiter = models.ForeignKey(Recruiter, on_delete=models.CASCADE, null=True, blank=True, related_name="recruiter_opening")
-
-    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE, null=True, blank=True, related_name="proposal_opening")
     
     # Additional Information
-    potential_resources = models.IntegerField(null=True, blank=True,validators=[MinValueValidator(0)])
 
+    potential_resources = models.IntegerField(null=True, blank=True,validators=[MinValueValidator(0)])
     technical_evaluation_for_resume = models.CharField(max_length=20, default="N/A", choices=DropDownOptions.choices)
     financial = models.CharField(max_length=20, default="N/A", choices=DropDownOptions.choices)
     security = models.CharField(max_length=20, default="N/A", choices=DropDownOptions.choices)
@@ -92,17 +83,6 @@ class Job(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True)
     job_project_info = models.ForeignKey(ProjectInformation, on_delete=models.CASCADE ,null=False, blank=False, related_name="job")
  
-
-class Partner(models.Model): 
-
-    class Meta:
-        db_table = 'partner'
-        verbose_name = 'partner'
-        verbose_name_plural = 'partners'
- 
-    partner_name = models.CharField(max_length=255, null=True, blank=True)
-    partner_address = models.CharField(max_length=255, null=True, blank=True)
-    project_information = models.ForeignKey(ProjectInformation, on_delete=models.CASCADE, null=True, blank=True, related_name="partners")
 
 
 class ProjectInfoUpdate(models.Model):
